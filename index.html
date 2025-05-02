@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +12,6 @@
         .gradient-bg {
             background: #1a365d;
             background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
-        }
-
-        .dark .gradient-bg {
-            background: #0f1a2e;
-            background: linear-gradient(135deg, #0f1a2e 0%, #1a2d44 100%);
         }
 
         .floating {
@@ -38,8 +33,17 @@
         }
 
         .mobile-menu {
-            transform: translateX(100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            z-index: 40;
+            transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
         }
 
         .mobile-menu.active {
@@ -54,49 +58,63 @@
             -webkit-backdrop-filter: blur(4px);
             backdrop-filter: blur(4px);
         }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 30;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
     </style>
 </head>
-<body class="font-sans bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+<body class="font-sans bg-gray-50">
     <!-- Navigation -->
-    <nav class="fixed w-full bg-white/90 backdrop-blur-sm z-40 shadow-sm dark:bg-gray-900/90">
+    <nav class="fixed w-full bg-white/90 backdrop-blur-sm z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <a href="#" class="flex items-center space-x-3">
                     <img src="logo.png" alt="SSC Associates Logo" class="w-12 h-12 object-contain rounded-lg bg-primary p-2" />
-                    <span class="text-xl font-bold text-primary dark:text-white">SSC Associates</span>
+                    <span class="text-xl font-bold text-primary">SSC Associates</span>
                 </a>
 
                 <div class="flex items-center space-x-6">
                     <ul class="hidden md:flex space-x-6">
                         <li>
-                            <a href="#services" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white">
+                            <a href="#services" class="nav-link text-gray-700 hover:text-primary">
                                 <i class="fas fa-chart-pie text-sm"></i>
                                 Services
                             </a>
                         </li>
                         <li>
-                            <a href="#experience" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white">
+                            <a href="#experience" class="nav-link text-gray-700 hover:text-primary">
                                 <i class="fas fa-briefcase text-sm"></i>
                                 Experience
                             </a>
                         </li>
                         <li>
-                            <a href="#why-choose-us" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white">
+                            <a href="#why-choose-us" class="nav-link text-gray-700 hover:text-primary">
                                 <i class="fas fa-comments text-sm"></i>
                                 Why Choose Us
                             </a>
                         </li>
                         <li>
-                            <a href="#contact" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white">
+                            <a href="#contact" class="nav-link text-gray-700 hover:text-primary">
                                 <i class="fas fa-envelope text-sm"></i>
                                 Contact
                             </a>
                         </li>
                     </ul>
 
-                    <button id="mobileMenuToggle" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i id="hamburgerIcon" class="fas fa-bars text-gray-600 dark:text-gray-300"></i>
-                        <i id="closeIcon" class="hidden fas fa-times text-gray-600 dark:text-gray-300"></i>
+                    <button id="mobileMenuToggle" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-bars text-gray-600"></i>
                     </button>
                 </div>
             </div>
@@ -104,48 +122,50 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg md:hidden">
-        <div class="container h-full flex flex-col items-center justify-center">
-            <ul class="space-y-8 text-center">
-                <li>
-                    <a href="#services" class="nav-link text-2xl text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <i class="fas fa-chart-pie mr-3"></i>
-                        Services
-                    </a>
-                </li>
-                <li>
-                    <a href="#experience" class="nav-link text-2xl text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <i class="fas fa-briefcase mr-3"></i>
-                        Experience
-                    </a>
-                </li>
-                <li>
-                    <a href="#testimonials" class="nav-link text-2xl text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <i class="fas fa-comments mr-3"></i>
-                        Testimonials
-                    </a>
-                </li>
-                <li>
-                    <a href="#contact" class="nav-link text-2xl text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <i class="fas fa-envelope mr-3"></i>
-                        Contact
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div id="mobileMenu" class="mobile-menu">
+        <ul class="space-y-4">
+            <li>
+                <a href="#services" class="nav-link text-gray-700 hover:text-primary">
+                    <i class="fas fa-chart-pie mr-3"></i>
+                    Services
+                </a>
+            </li>
+            <li>
+                <a href="#experience" class="nav-link text-gray-700 hover:text-primary">
+                    <i class="fas fa-briefcase mr-3"></i>
+                    Experience
+                </a>
+            </li>
+            <li>
+                <a href="#testimonials" class="nav-link text-gray-700 hover:text-primary">
+                    <i class="fas fa-comments mr-3"></i>
+                    Testimonials
+                </a>
+            </li>
+            <li>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-primary">
+                    <i class="fas fa-envelope mr-3"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay">
+        
     </div>
 
     <!-- Hero Section -->
     <section class="pt-32 pb-20 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:flex items-center gap-12">
             <div class="md:w-1/2" data-aos="fade-right">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary dark:text-white mb-6 leading-tight">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
                     SSC Associates 
                 </h1>
-                <p class="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-8">
+                <p class="text-lg sm:text-xl text-gray-700 mb-8">
                      Accountants & Tax Consultants
                 </p>
-              
             </div>
             <div class="md:w-1/2 mt-16 md:mt-0 relative">
                 <img src="https://images.unsplash.com/photo-1554224155-3a58922a22c3" 
@@ -162,97 +182,94 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12" data-aos="fade-up">Our Services</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-               <!-- Financial Statements -->
-               <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-file-invoice text-2xl text-primary"></i>
+                <!-- Financial Statements -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-file-invoice text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Financial Statements</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Comprehensive preparation and analysis of balance sheets, income statements, and cash flow reports</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Financial Statements</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Comprehensive preparation and analysis of balance sheets, income statements, and cash flow reports</p>
-            </div>
 
-            <!-- Cash Flow Management -->
-            <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-chart-line text-2xl text-primary"></i>
+                <!-- Cash Flow Management -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Cash Flow Analysis</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Strategic cash flow forecasting and working capital optimization</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Cash Flow Analysis</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Strategic cash flow forecasting and working capital optimization</p>
-            </div>
 
-            <!-- Tax Compliance -->
-            <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-file-contract text-2xl text-primary"></i>
+                <!-- Tax Compliance -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-file-contract text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Tax Compliance (TTCs & WHTEC)</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Complete tax certificate management and withholding tax compliance</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Tax Compliance (TTCs & WHTEC)</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Complete tax certificate management and withholding tax compliance</p>
-            </div>
 
-            <!-- Msonkho Online -->
-            <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-laptop text-2xl text-primary"></i>
+                <!-- Msonkho Online -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-laptop text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Msonkho Online</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Digital tax filing and real-time compliance monitoring solutions</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Msonkho Online</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Digital tax filing and real-time compliance monitoring solutions</p>
-            </div>
 
-            <!-- Tax Advisory -->
-            <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-hand-holding-usd text-2xl text-primary"></i>
+                <!-- Tax Advisory -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-hand-holding-usd text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Tax Advisory</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Strategic tax planning and cross-border taxation advisory</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Tax Advisory</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Strategic tax planning and cross-border taxation advisory</p>
-            </div>
 
-            <!-- Audit Assurance -->
-            <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
-                <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
-                    <i class="fas fa-search-dollar text-2xl text-primary"></i>
+                <!-- Audit Assurance -->
+                <div class="service-card bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition-all" data-aos="zoom-in">
+                    <div class="service-icon w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-search-dollar text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Audit & Assurance</h3>
+                    <p class="text-gray-200 text-sm sm:text-base">Comprehensive financial audits and regulatory compliance checks</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Audit & Assurance</h3>
-                <p class="text-gray-200 text-sm sm:text-base">Comprehensive financial audits and regulatory compliance checks</p>
-            </div>
-        </div>
-    </div>
-</section>
             </div>
         </div>
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-20 bg-white dark:bg-gray-800">
+    <section id="experience" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl sm:text-4xl font-bold text-primary dark:text-white text-center mb-12">Our Expertise</h2>
+            <h2 class="text-3xl sm:text-4xl font-bold text-primary text-center mb-12">Our Expertise</h2>
             <div class="grid md:grid-cols-2 gap-12">
                 <div class="space-y-8" data-aos="fade-right">
-                    <div class="flex items-start gap-6 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                    <div class="flex items-start gap-6 p-6 bg-gray-50 rounded-xl">
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                             <i class="fas fa-university text-white text-xl"></i>
                         </div>
                         <div>
                             <h3 class="text-xl font-bold mb-2">25+ Years Experience</h3>
-                            <p class="text-gray-600 dark:text-gray-300">Combined expertise in corporate and personal taxation</p>
+                            <p class="text-gray-600">Combined expertise in corporate and personal taxation</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-6 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                    <div class="flex items-start gap-6 p-6 bg-gray-50 rounded-xl">
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                             <i class="fas fa-users text-white text-xl"></i>
                         </div>
                         <div>
                             <h3 class="text-xl font-bold mb-2">500+ Clients Served</h3>
-                            <p class="text-gray-600 dark:text-gray-300">Including SMEs and multinational corporations</p>
+                            <p class="text-gray-600">Including SMEs and multinational corporations</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-6 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                    <div class="flex items-start gap-6 p-6 bg-gray-50 rounded-xl">
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                             <i class="fas fa-trophy text-white text-xl"></i>
                         </div>
                         <div>
                             <h3 class="text-xl font-bold mb-2">Award-Winning Service</h3>
-                            <p class="text-gray-600 dark:text-gray-300">Recognized for excellence in financial consulting</p>
+                            <p class="text-gray-600">Recognized for excellence in financial consulting</p>
                         </div>
                     </div>
                 </div>
@@ -266,24 +283,24 @@
     </section>
 
     <!-- Why Choose Us Section -->
-    <section id="why-choose-us" class="py-20 bg-gray-100 dark:bg-gray-700">
+    <section id="why-choose-us" class="py-20 bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Why Choose SSC Associates?</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up">
+                <div class="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up">
                     <i class="fas fa-user-shield text-4xl text-primary mb-4"></i>
                     <h3 class="text-xl font-bold mb-2">Trusted Expertise</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">Our team brings decades of experience in accounting, tax, and audit, ensuring reliable and compliant solutions for your business.</p>
+                    <p class="text-gray-600 text-center">Our team brings decades of experience in accounting, tax, and audit, ensuring reliable and compliant solutions for your business.</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up" data-aos-delay="100">
                     <i class="fas fa-bolt text-4xl text-primary mb-4"></i>
                     <h3 class="text-xl font-bold mb-2">Responsive Service</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">We pride ourselves on timely communication and proactive support, so you can focus on what matters most—growing your business.</p>
+                    <p class="text-gray-600 text-center">We pride ourselves on timely communication and proactive support, so you can focus on what matters most—growing your business.</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
                     <i class="fas fa-lightbulb text-4xl text-primary mb-4"></i>
                     <h3 class="text-xl font-bold mb-2">Innovative Solutions</h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-center">We leverage the latest technology and best practices to deliver efficient, tailored financial strategies for every client.</p>
+                    <p class="text-gray-600 text-center">We leverage the latest technology and best practices to deliver efficient, tailored financial strategies for every client.</p>
                 </div>
             </div>
         </div>
@@ -298,13 +315,11 @@
             </div>
             <form class="space-y-4 sm:space-y-6" data-aos="fade-up">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <input type="text" placeholder="Name" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white">
-                    <input type="email" placeholder="Email" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white">
+                    <input type="text" placeholder="Name" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+                    <input type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
                 </div>
-                <textarea rows="4" placeholder="Message" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white"></textarea>
-                <button class="w-full bg-white text-primary px-6 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all">
-                    Send Message
-                </button>
+                <textarea placeholder="Message" class="w-full px-4 py-2 border border-gray-300 rounded-md" rows="4" required></textarea>
+                <button type="submit" class="w-full bg-accent text-white py-2 rounded-md hover:bg-accent-dark transition">Send Message</button>
             </form>
         </div>
     </section>
@@ -352,44 +367,28 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         primary: '#1a365d',
                         secondary: '#2c5282',
-                        accent: '#c05621'
+                        accent: '#c05621',
+                        'accent-dark': '#a0522d'
                     }
                 }
             }
         }
 
         AOS.init({ duration: 1000, once: true });
-         
-        new Swiper('.testimonial-swiper', {
-            loop: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
-            breakpoints: {
-                640: {slidesPerView: 1},
-                768: {slidesPerView: 2},
-                1024: {slidesPerView: 3}
-            }
-        });
-
 
         // Mobile Menu Toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
-        const hamburgerIcon = document.getElementById('hamburgerIcon');
-        const closeIcon = document.getElementById('closeIcon');
+        const overlay = document.getElementById('overlay');
 
         mobileMenuToggle.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
-            hamburgerIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
+            overlay.classList.toggle('active');
             document.body.classList.toggle('overflow-hidden');
         });
 
@@ -397,8 +396,7 @@
         document.addEventListener('click', (e) => {
             if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
                 mobileMenu.classList.remove('active');
-                hamburgerIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
+                overlay.classList.remove('active');
                 document.body.classList.remove('overflow-hidden');
             }
         });
@@ -413,19 +411,11 @@
                 // Close mobile menu after navigation
                 if (mobileMenu.classList.contains('active')) {
                     mobileMenu.classList.remove('active');
-                    hamburgerIcon.classList.remove('hidden');
-                    closeIcon.classList.add('hidden');
+                    overlay.classList.remove('active');
                     document.body.classList.remove('overflow-hidden');
                 }
-            });
+ }
         });
-
-        // Initialize theme
-        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-            darkModeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
-        }
     </script>
 </body>
 </html>
